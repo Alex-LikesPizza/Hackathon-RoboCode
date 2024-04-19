@@ -13,6 +13,18 @@ export default async function(){
     tileSet: {
       decorations: new Image(),
       terrain: new Image(),
+    },
+    box: {
+      boxPiece1: new Image(),
+      boxPiece2: new Image(),
+      boxPiece3: new Image(),
+      boxPiece4: new Image(),
+      hit: new Image(),
+      idle: new Image(),
+    },
+    diamond:{
+      idle: new Image(),
+      disappear: new Image(),
     }
   };
 
