@@ -6,6 +6,7 @@ export default async function(){
       doorOut: new Image(),
       ground: new Image(),
       idle: new Image(),
+      die: new Image(),
       run: new Image(),
       jump: new Image(),
       fall: new Image(),
@@ -25,6 +26,10 @@ export default async function(){
     diamond:{
       idle: new Image(),
       disappear: new Image(),
+    },
+    maps: {
+      lvl1: new Image(),
+      playingLvl1: new Image(),
     }
   };
 
