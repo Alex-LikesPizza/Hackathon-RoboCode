@@ -10,10 +10,7 @@ export default async function(){
       run: new Image(),
       jump: new Image(),
       fall: new Image(),
-    },
-    tileSet: {
-      decorations: new Image(),
-      terrain: new Image(),
+      hit: new Image(),
     },
     box: {
       boxPiece1: new Image(),
@@ -21,6 +18,11 @@ export default async function(){
       boxPiece3: new Image(),
       boxPiece4: new Image(),
       hit: new Image(),
+      idle: new Image(),
+    },
+    door: {
+      closing: new Image(),
+      opening: new Image(),
       idle: new Image(),
     },
     diamond:{

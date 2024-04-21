@@ -16,7 +16,8 @@ export const levelsProperties = [
     ],
     diamonds: [
     {x: 10, y: 6}, {x: 5, y: 8}],
-    startPoz: {x: 3, y: 8}
+    startPoz: {x: 2, y: 8},
+    endPoz: {x: 11, y: 6},
   }
 ]
 

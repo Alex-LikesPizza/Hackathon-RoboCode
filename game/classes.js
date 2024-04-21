@@ -1,5 +1,5 @@
 import { canvas, ctx } from "./setup.js";
-import { bumped, is_UINT } from "./errors.js";
+import { bumped, is_UINT, is_direction } from "./errors.js";
 class GameObject {
   constructor(pozX, pozY, assets, level, totalFrames) {
     this.x = pozX;
@@ -19,7 +19,52 @@ class GameObject {
     this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
   }
 }
+export class Door extends GameObject {
+  constructor(assets, level, type){
+    super(level[`${type}Poz`].x, level[`${type}Poz`].y, assets, level, 1);
+    this.stasis = false;
+  }
 
+  draw() {
+    ctx.drawImage(
+      this.asset,
+      this.frameWidth * this.currentFrame,
+      0,
+    this.frameWidth,
+    this.frameHeight,
+    (this.x - 0.1 / 2) * this.boxSizeX,
+    (this.y - 0.5) * this.boxSizeY,
+    this.boxSizeX * 1.1,
+    this.boxSizeY * 1.5
+  );
+  }
+  access() {
+    this.openingAnimation();
+
+    setTimeout(() => {
+      this.closingAnimation()
+
+      setTimeout(() => this.idleAnimation(), this.totalFrames * window.animationSpeed);
+
+    }, this.totalFrames * window.animationSpeed);
+  }
+  closingAnimation(){
+    this.asset = this.assets.closing;
+    this.totalFrames = 3;
+    this.currentFrame = 0;
+  }
+  openingAnimation(){
+    this.asset = this.assets.opening;
+    this.totalFrames = 5;
+    this.currentFrame = 0;
+  }
+  idleAnimation(){
+    this.asset = this.assets.idle;
+    this.totalFrames = 1;
+    this.currentFrame = 0;
+  }
+
+}
 export class Diamond extends GameObject {
   constructor(pozX, pozY, asset, level) {
     super(pozX, pozY, asset, level, 10);
@@ -49,6 +94,7 @@ export class Player extends GameObject {
     super(pozX, pozY, asset, level, 11);
     this.facing = "right";
     this.bumped = false;
+    this.actions = 0;
   }
 
   draw() {
@@ -89,49 +135,59 @@ export class Player extends GameObject {
   }
   checkLeftCollision(jump = false) {
     let row = Math.floor(this.y - jump);
-    let col = Math.floor(this.x +0.001);
+    let col = Math.floor(this.x - jump + 0.01);
     return this.level.map[row][col] === 1
   }
   checkRightCollision(jump = false){
     let row = Math.floor(this.y - jump);
-    let col = Math.ceil(this.x);
+    let col = Math.ceil(this.x + jump);
     return this.level.map[row][col] === 1
   }
+  idle(){
+    this.idleAnimation();
+  }
   fall(jump = false) {
-    let gravity = jump ? 0.1 : 0.04;
-    let velocityY = jump ? 0 : -0.04;
+    this.actions++;
+    let gravity = jump ? 0.1 : 0.01;
+    let velocity = 0;
     let speed = window.gameSpeed;
     this.fallAnimation();
   
     const moving = setInterval(() => {
-      this.y += velocityY;
-      velocityY += gravity;
+      this.y += velocity;
+      velocity += gravity;
       if (this.checkBottomCollision()) {
         this.y = Math.floor(this.y);
         clearInterval(moving);
-        this.idleAnimation();
+        this.idle();
+        this.actions--;
         return;
       }
     }, speed);
   }
   jump(direction) {
-    let maxHeight = 1;
+    if(!is_direction(direction) ){
+      return;
+    }
+    this.actions++;
+    let maxHeight = 0.9;
     let gravity = 0.15;
-    let velocityY = Math.sqrt(maxHeight * gravity * 2);
+    let velocity = Math.sqrt(maxHeight * gravity * 2);
     let speed = window.gameSpeed;
-  
+    
     if(direction === "left") this.moveLeft(1, true);
     if(direction === "right") this.moveRight(1, true);
 
     this.jumpAnimation();
     const moving = setInterval(() => {
-      if (velocityY <= 0) {
+      if (velocity <= 0) {
         clearInterval(moving)
         this.fall(true);
+        this.actions--;
         return
       }
-      this.y -= velocityY;
-      velocityY -= gravity;
+      this.y -= velocity;
+      velocity -= gravity;
     }, speed);
   }
 
@@ -139,34 +195,34 @@ export class Player extends GameObject {
     if(!is_UINT(x)){
       return;
     }
+    this.actions++;
     this.facing = "right";
     this.runAnimation();
     let speed = window.gameSpeed * 0.5;
     let step = 0.1;
     let i = 0;
     
+    if(jump && this.checkRightCollision(true)){
+      this.die();
+      this.actions--;
+      return;
+    };
     
     const moving = setInterval(() => {
       this.x += step;
       if(i >= x / step){
         this.x = Math.floor(this.x);
         clearInterval(moving);
-        if(!jump)this.idleAnimation();
+        if(!jump)this.idle();
+        this.actions--;
       }
-      if(!jump && this.checkRightCollision()){
+      else if(!jump && this.checkRightCollision()){
         clearInterval(moving);
         this.die();
-        return
+        this.actions--;
       };
-      if(jump && this.checkRightCollision(true)){
-        clearInterval(moving);
-        this.die();
-        return
-      };
-      if(!jump){
-        if(!this.checkBottomCollision()){
-          this.fall();
-        };
+      if(!jump && !this.checkBottomCollision()){
+        this.fall();
       }
       i++;
     }, speed);
@@ -175,11 +231,18 @@ export class Player extends GameObject {
     if(!is_UINT(x)){
       return;
     }
+    this.actions++;
     this.facing = "left";
     this.runAnimation();
     let speed = window.gameSpeed * 0.5;
     let step = 0.1;
     let i = 0;
+
+    if(jump && this.checkLeftCollision(true)){
+      this.die();
+      this.actions--;
+      return
+    };
     
 
     const moving = setInterval(() => {
@@ -187,26 +250,27 @@ export class Player extends GameObject {
       if(i >= x / step){
         this.x = Math.ceil(this.x);
         clearInterval(moving);
-        if(!jump)this.idleAnimation();
+        if(!jump)this.idle();
+        this.actions--;
       }
-      if(!jump && this.checkLeftCollision()){
+      else if(!jump && this.checkLeftCollision()){
         clearInterval(moving);
         this.die();
-        return
+        return;
       };
-      
-      if(jump && this.checkLeftCollision()){
-        clearInterval(moving);
-        this.die();
-        return
-      };
-      if(!jump){
-        if(!this.checkBottomCollision()){
-          this.fall();
-        };
+      if(!jump && !this.checkBottomCollision()){
+        this.fall();
       }
       i++;
     }, speed);
+  }
+  attack(){
+    this.attackAnimation();
+    this.actions++;
+    setTimeout(() => {
+      this.idle()
+      this.actions--;
+    }, window.animationSpeed * this.totalFrames);
   }
   die(){
     bumped();
@@ -227,7 +291,7 @@ export class Player extends GameObject {
     if(this.bumped) return;
     this.asset = this.assets.idle;
     this.totalFrames = 11;
-    this.currentFrame = 3;
+    this.currentFrame = 1;
   }
   jumpAnimation(){
     if(this.bumped) return;
@@ -241,10 +305,26 @@ export class Player extends GameObject {
     this.currentFrame = 0;
     this.totalFrames = 1;
   }
+  attackAnimation(){
+    if(this.bumped) return;
+    this.asset = this.assets.attack;
+    this.currentFrame = 0;
+    this.totalFrames = 3;
+  }
   dieAnimation(){
     this.asset = this.assets.die;
     this.currentFrame = 0;
     this.totalFrames = 4;
+  }
+  doorInAnimation(){
+    this.asset = this.assets.doorIn;
+    this.currentFrame = 0;
+    this.totalFrames = 8;
+  }
+  doorOutAnimation(){
+    this.asset = this.assets.doorOut;
+    this.currentFrame = 0;
+    this.totalFrames = 8;
   }
 }
 
