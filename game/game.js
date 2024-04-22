@@ -3,8 +3,10 @@ import getAssets from "./assets.js"
 import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
 
-window.gameSpeed = 60;
-window.animationSpeed = 60;
+window.settings = {
+  gameSpeed: 60,
+  animationSpeed: 60
+}
 
 const levels = [null];
 
@@ -21,13 +23,13 @@ function drawCollectables() {
 function setupGame(){
   for(let i = 1; i < levelsProperties.length; i++){
     const { map, diamonds, startPoz, endPoz } = levelsProperties[i]; 
-    levels.push(new Level(i, levelsProperties[i].map, assets.maps[`playingLvl${i}`]));
+    levels.push(new Level(i, levelsProperties[i].map, assets.maps));
     levels[i].map = map.map(arr => [...arr]);
     levels[i].diamonds = diamonds.map(poz => ({...poz}));
     levels[i].startPoz = {...startPoz}
     levels[i].endPoz = {...endPoz}
   };
-  buildLevel(1);
+  buildLevel(2);
   startGame();
 }
 function buildLevel(id){
@@ -41,8 +43,9 @@ function buildLevel(id){
   
 }
 function startGame(){
-  setInterval(gameLoop, window.animationSpeed);
+  setInterval(gameLoop, settings.animationSpeed);
   level.startDoor.access();
+  player.enter()
 }
 
 function gameLoop(){
@@ -66,11 +69,12 @@ function drawPalette(){
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // background
-  level.draw();
+  level.drawBackground();
   level.endDoor.draw();
   level.startDoor.draw();
   
   //foreground  
+  level.drawForeground();
   
   // objects
   collectables.forEach(collectable => collectable.draw());

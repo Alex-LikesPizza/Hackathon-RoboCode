@@ -33,20 +33,24 @@ export class Door extends GameObject {
     this.frameWidth,
     this.frameHeight,
     (this.x - 0.1 / 2) * this.boxSizeX,
-    (this.y - 0.5) * this.boxSizeY,
+    (this.y - 0.6) * this.boxSizeY,
     this.boxSizeX * 1.1,
-    this.boxSizeY * 1.5
+    this.boxSizeY * 1.6
   );
+  }
+  update() {
+    if(this.stasis && this.currentFrame === this.totalFrames - 1) return;
+    this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
   }
   access() {
     this.openingAnimation();
-
+    this.stasis = true;
     setTimeout(() => {
+      this.stasis = false;
       this.closingAnimation()
+      setTimeout(() => this.idleAnimation(), this.totalFrames * settings.animationSpeed);
 
-      setTimeout(() => this.idleAnimation(), this.totalFrames * window.animationSpeed);
-
-    }, this.totalFrames * window.animationSpeed);
+    }, (this.totalFrames + 8) * settings.animationSpeed);
   }
   closingAnimation(){
     this.asset = this.assets.closing;
@@ -72,9 +76,9 @@ export class Diamond extends GameObject {
   
   draw() {
       ctx.drawImage(
-        this.asset,
-        this.frameWidth * this.currentFrame,
-        0,
+      this.asset,
+      this.frameWidth * this.currentFrame,
+      0,
       this.frameWidth,
       this.frameHeight,
       this.x * this.boxSizeX + this.boxSizeX * 0.07,
@@ -95,6 +99,7 @@ export class Player extends GameObject {
     this.facing = "right";
     this.bumped = false;
     this.actions = 0;
+    this.currentAction = "idle";
   }
 
   draw() {
@@ -130,8 +135,10 @@ export class Player extends GameObject {
   }
   checkBottomCollision() {
     let row = Math.floor(this.y + 1);
-    let col = Math.floor(this.x);
-    return this.level.map[row] && this.level.map[row][col] !== 0;
+    let col = Math[this.facing === "left"? "floor" : "ceil"](this.x);
+    if(!this.level.map[row]) return true;
+    return this.level.map[row][col] !== 0
+
   }
   checkLeftCollision(jump = false) {
     let row = Math.floor(this.y - jump);
@@ -143,14 +150,18 @@ export class Player extends GameObject {
     let col = Math.ceil(this.x + jump);
     return this.level.map[row][col] === 1
   }
+  align(){
+    
+  }
   idle(){
     this.idleAnimation();
   }
   fall(jump = false) {
     this.actions++;
+    this.currentAction = "fall";
     let gravity = jump ? 0.1 : 0.01;
     let velocity = 0;
-    let speed = window.gameSpeed;
+    let speed = settings.gameSpeed;
     this.fallAnimation();
   
     const moving = setInterval(() => {
@@ -169,14 +180,17 @@ export class Player extends GameObject {
     if(!is_direction(direction) ){
       return;
     }
+    this.currentAction = "jump";
     this.actions++;
-    let maxHeight = 0.9;
+    let maxHeight = 0.75;
     let gravity = 0.15;
     let velocity = Math.sqrt(maxHeight * gravity * 2);
-    let speed = window.gameSpeed;
+    let speed = settings.gameSpeed;
     
-    if(direction === "left") this.moveLeft(1, true);
-    if(direction === "right") this.moveRight(1, true);
+    setTimeout(() => {
+      if(direction === "left") this.moveLeft(1, true);
+      if(direction === "right") this.moveRight(1, true);
+    }, settings.gameSpeed * 1.5)
 
     this.jumpAnimation();
     const moving = setInterval(() => {
@@ -197,8 +211,8 @@ export class Player extends GameObject {
     }
     this.actions++;
     this.facing = "right";
-    this.runAnimation();
-    let speed = window.gameSpeed * 0.5;
+    if(!jump)this.runAnimation();
+    let speed = settings.gameSpeed * 0.5;
     let step = 0.1;
     let i = 0;
     
@@ -233,8 +247,8 @@ export class Player extends GameObject {
     }
     this.actions++;
     this.facing = "left";
-    this.runAnimation();
-    let speed = window.gameSpeed * 0.5;
+    if(!jump)this.runAnimation();
+    let speed = settings.gameSpeed * 0.5;
     let step = 0.1;
     let i = 0;
 
@@ -270,7 +284,7 @@ export class Player extends GameObject {
     setTimeout(() => {
       this.idle()
       this.actions--;
-    }, window.animationSpeed * this.totalFrames);
+    }, settings.animationSpeed * this.totalFrames);
   }
   die(){
     bumped();
@@ -280,6 +294,27 @@ export class Player extends GameObject {
       if(this.currentFrame === this.totalFrames - 1) return;
       this.currentFrame = (this.currentFrame + 1);
     }
+  }
+  enter(){
+    this.actions++;
+    const drawCpy = this.draw;
+    this.draw = () => {};
+
+    setTimeout(() => {
+      this.draw = drawCpy;
+      this.doorOutAnimation()
+      
+      setTimeout(() => {
+        this.idle();
+        this.actions--;
+      }, this.totalFrames * settings.animationSpeed)
+    }, 5 * settings.animationSpeed);
+  }
+  doorIn(){
+    this.doorInAnimation();
+  }
+  doorOut(){
+    this.doorOutAnimation();
   }
   runAnimation(){
     if(this.bumped)return;

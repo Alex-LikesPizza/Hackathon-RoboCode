@@ -30,8 +30,10 @@ export default async function(){
       disappear: new Image(),
     },
     maps: {
-      lvl1: new Image(),
-      playingLvl1: new Image(),
+      lvl1Foreground: new Image(),
+      lvl1Background: new Image(),
+      lvl2Foreground: new Image(),
+      lvl2Background: new Image(),
     }
   };
 

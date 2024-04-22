@@ -1,0 +1,46 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "lvl1.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 221.75,
+                "y": 135.5
+            }
+        },
+        "lvl2.tmx": {
+            "scale": 2.361145833333333,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 269.9960294701549,
+                "y": 159.24471698945607
+            }
+        },
+        "lvl2.tmx#dec": {
+            "scaleInDock": 1
+        },
+        "lvl2.tmx#terrain": {
+            "scaleInDock": 1
+        }
+    },
+    "last.externalTilesetPath": "D:/Web Dev/Web Dev Projects/Hackathon-RoboCode/game/maps",
+    "map.height": 10,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 15,
+    "openFiles": [
+    ],
+    "project": "project.tiled-project",
+    "recentFiles": [
+    ]
+}
