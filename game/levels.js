@@ -1,4 +1,4 @@
-import { canvas, ctx } from "./setup.js";
+import { canvas, ctx } from "./canvas.js";
 
 export const levelsProperties = [
   null,
@@ -15,8 +15,8 @@ export const levelsProperties = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ],
     diamonds: [
-    {x: 10, y: 6}, {x: 5, y: 8}],
-    startPoz: {x: 2, y: 4},
+    {x: 2, y: 4}, {x: 12, y: 6}],
+    startPoz: {x: 3, y: 4},
     endPoz: {x: 11, y: 6},
   },
   { map: [
@@ -32,7 +32,7 @@ export const levelsProperties = [
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
     ],
     diamonds: [
-    {x: 10, y: 6}, {x: 5, y: 8}],
+    {x: 10, y: 6}, {x: 5, y: 6}, {x: 6, y: 8}],
     startPoz: {x: 2, y: 8},
     endPoz: {x: 11, y: 6},
   }
@@ -60,3 +60,4 @@ export class Level{
     ctx.drawImage(this.assets[`lvl${this.nr}Foreground`], 0, 0, canvasSizeX, canvasSizeY);
   }
 }
+

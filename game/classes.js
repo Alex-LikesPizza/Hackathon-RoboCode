@@ -1,5 +1,5 @@
-import { ctx } from "./setup.js";
-import { bumped, is_UINT, is_direction } from "./errors.js";
+import { ctx } from "./canvas.js";
+import { bumped, is_UINT, is_direction, is_validExit } from "./errors.js";
 class GameObject {
   constructor(pozX, pozY, assets, level, totalFrames) {
     this.x = pozX;
@@ -22,7 +22,8 @@ class GameObject {
 export class Door extends GameObject {
   constructor(assets, level, type){
     super(level[`${type}Poz`].x, level[`${type}Poz`].y, assets, level, 1);
-    this.stasis = false;
+    this.type = type;
+    this.isOpen = false;
   }
 
   draw() {
@@ -30,28 +31,42 @@ export class Door extends GameObject {
       this.asset,
       this.frameWidth * this.currentFrame,
       0,
-    this.frameWidth,
-    this.frameHeight,
-    (this.x - 0.1 / 2) * this.boxSizeX,
-    (this.y - 0.6) * this.boxSizeY,
-    this.boxSizeX * 1.1,
-    this.boxSizeY * 1.6
-  );
+      this.frameWidth,
+      this.frameHeight,
+      (this.x - 0.1 / 2) * this.boxSizeX,
+      (this.y - 0.6) * this.boxSizeY,
+      this.boxSizeX * 1.1,
+      this.boxSizeY * 1.6
+    );
   }
   update() {
-    if(this.stasis && this.currentFrame === this.totalFrames - 1) return;
+    if(this.isOpen && this.currentFrame === this.totalFrames - 1) return;
     this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
   }
-  access() {
+  open(){
+    this.isOpen = true;
     this.openingAnimation();
-    this.stasis = true;
+  }
+  close(){
+    this.isOpen = false;
+    this.closingAnimation();
+    setTimeout(() => this.idle(), this.totalFrames * settings.animationSpeed);
+  }
+  idle(){
+    this.isOpen = false;
+    this.idleAnimation();
+  }
+  enter() {
+    this.open();
     setTimeout(() => {
-      this.stasis = false;
-      this.closingAnimation()
-      setTimeout(() => this.idleAnimation(), this.totalFrames * settings.animationSpeed);
-
+      this.close();
     }, (this.totalFrames + 8) * settings.animationSpeed);
   }
+  exit() {
+    this.level.finished = true;
+    this.close();
+  }
+
   closingAnimation(){
     this.asset = this.assets.closing;
     this.totalFrames = 3;
@@ -88,8 +103,15 @@ export class Diamond extends GameObject {
     );
   }
   
+  checkCollect(){
+    if(Math.round(this.level.player.x)  === this.x && Math.round(this.level.player.y)  === this.y){
+      this.collect();
+    }
+  }
+
   collect(){
-    delete this;
+    const index = this.level.collectables.indexOf(this);
+    this.level.collectables.splice(index, 1);
   }
 }
 
@@ -149,9 +171,6 @@ export class Player extends GameObject {
     let row = Math.floor(this.y - jump);
     let col = Math.ceil(this.x + jump);
     return this.level.map[row][col] === 1
-  }
-  align(){
-    
   }
   idle(){
     this.idleAnimation();
@@ -302,13 +321,25 @@ export class Player extends GameObject {
 
     setTimeout(() => {
       this.draw = drawCpy;
-      this.doorOutAnimation()
+      this.doorOut()
       
       setTimeout(() => {
         this.idle();
         this.actions--;
       }, this.totalFrames * settings.animationSpeed)
     }, 5 * settings.animationSpeed);
+  }
+  exit(){
+    if(!is_validExit(this)){
+      return;
+    }
+    this.actions++;
+    this.doorIn();
+    setTimeout(() => {
+      this.actions--;
+      this.draw = () => {};
+      this.level.endDoor.exit();
+    }, this.totalFrames * settings.animationSpeed);
   }
   doorIn(){
     this.doorInAnimation();
