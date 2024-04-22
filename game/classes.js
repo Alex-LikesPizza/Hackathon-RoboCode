@@ -1,4 +1,4 @@
-import { canvas, ctx } from "./setup.js";
+import { ctx } from "./setup.js";
 import { bumped, is_UINT, is_direction } from "./errors.js";
 class GameObject {
   constructor(pozX, pozY, assets, level, totalFrames) {
@@ -190,7 +190,7 @@ export class Player extends GameObject {
     setTimeout(() => {
       if(direction === "left") this.moveLeft(1, true);
       if(direction === "right") this.moveRight(1, true);
-    }, settings.gameSpeed * 1.5)
+    }, settings.gameSpeed * 1)
 
     this.jumpAnimation();
     const moving = setInterval(() => {
