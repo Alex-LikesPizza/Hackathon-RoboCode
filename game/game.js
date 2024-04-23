@@ -76,7 +76,7 @@ function setupGame(){
 }
 function advance(){
   clearInterval(settings.gameInterval);
-  buildLevel(++settings.currentLevel);
+  buildLevel(settings.currentLevel++);
 }
 function buildLevel(id){
   level = levels[id];
