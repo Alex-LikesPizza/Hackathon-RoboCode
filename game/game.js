@@ -4,10 +4,10 @@ import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
 
 window.settings = {
-  gameSpeed: 120,
+  gameSpeed: 60,
   animationSpeed: 60,
 
-  currentLevel: 0,
+  currentLevel: 3,
   blackoutLevel: 1,
   gameInterval: null,
 }
@@ -19,48 +19,48 @@ let player = {};
 
 const collectables = [];
 const actionQueue = [
-  //lvl1
-  {
-    command: "moveLeft",
-    moveBy: 1,
-  },
-  {
-    command: "moveRight",
-    moveBy: 10,
-  },
-  {
-    command: "moveLeft",
-    moveBy: 1,
-  },
-  {
-    command: "enter"
-  },
+  // //lvl1
+  // {
+  //   command: "moveLeft",
+  //   moveBy: 1,
+  // },
+  // {
+  //   command: "moveRight",
+  //   moveBy: 10,
+  // },
+  // {
+  //   command: "moveLeft",
+  //   moveBy: 1,
+  // },
+  // {
+  //   command: "enter"
+  // },
 
-  // lvl 2
-  {
-    command: "moveRight",
-    moveBy: 4,
-  },
-  {
-    command: "jump",
-    direction: "up"
-  },
-  {
-    command: "jump",
-    direction: "left"
-  },
-  {
-    command: "jump",
-    direction: "right"
-  },
-  {
-    command: "jump",
-    direction: "right"
-  },
-  {
-    command: "moveRight",
-    moveBy: 4
-  },
+  // // lvl 2
+  // {
+  //   command: "moveRight",
+  //   moveBy: 4,
+  // },
+  // {
+  //   command: "jump",
+  //   direction: "up"
+  // },
+  // {
+  //   command: "jump",
+  //   direction: "left"
+  // },
+  // {
+  //   command: "jump",
+  //   direction: "right"
+  // },
+  // {
+  //   command: "jump",
+  //   direction: "right"
+  // },
+  // {
+  //   command: "moveRight",
+  //   moveBy: 4
+  // },
 ];
 
 function setupGame(){

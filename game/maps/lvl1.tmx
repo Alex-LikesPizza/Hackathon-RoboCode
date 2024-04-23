@@ -2,7 +2,7 @@
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" source="terrain.tsx"/>
  <tileset firstgid="248" source="decorations.tsx"/>
- <layer id="2" name="background" width="15" height="10" visible="0">
+ <layer id="2" name="background" width="15" height="10">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -16,7 +16,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="decoration" width="15" height="10" visible="0">
+ <layer id="3" name="decoration" width="15" height="10">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -30,7 +30,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="props" width="15" height="10" visible="0">
+ <layer id="4" name="props" width="15" height="10">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

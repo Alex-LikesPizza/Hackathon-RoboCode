@@ -3,34 +3,57 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "lvl2.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
             "scaleInDock": 1
         },
+        "decorations.tsx": {
+            "scaleInDock": 1.5
+        },
         "lvl1.tmx": {
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 235,
-                "y": 166.75
+                "x": 239.75,
+                "y": 159.75
             }
         },
         "lvl2.tmx": {
             "scale": 2.361145833333333,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 269.9960294701549,
-                "y": 159.24471698945607
+                "x": 196.7265187276658,
+                "y": 157.76238584726696
             }
         },
         "lvl2.tmx#dec": {
             "scaleInDock": 1
         },
         "lvl2.tmx#terrain": {
+            "scaleInDock": 1
+        },
+        "lvl3.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 345.25,
+                "y": 191.25
+            }
+        },
+        "lvl4.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 274.33333333333337,
+                "y": 171
+            }
+        },
+        "terrain.tsx": {
             "scaleInDock": 1
         }
     },
@@ -39,8 +62,14 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 15,
     "openFiles": [
+        "lvl1.tmx",
+        "lvl3.tmx",
+        "lvl2.tmx"
     ],
     "project": "project.tiled-project",
     "recentFiles": [
+        "lvl1.tmx",
+        "lvl3.tmx",
+        "lvl2.tmx"
     ]
 }

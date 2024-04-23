@@ -34,6 +34,8 @@ export default async function(){
       lvl1Background: new Image(),
       lvl2Foreground: new Image(),
       lvl2Background: new Image(),
+      lvl4Background: new Image(),
+      lvl4Foreground: new Image(),
     }
   };
 
