@@ -16,6 +16,7 @@ class GameObject {
   }
   
   update() {
+    if(this.animationStasis && this.currentFrame === this.totalFrames - 1) return;
     this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
   }
 }
@@ -23,7 +24,7 @@ export class Door extends GameObject {
   constructor(assets, level, type){
     super(level[`${type}Poz`].x, level[`${type}Poz`].y, assets, level, 1);
     this.type = type;
-    this.isOpen = false;
+    this.animationStasis = false;
   }
 
   draw() {
@@ -39,21 +40,18 @@ export class Door extends GameObject {
       this.boxSizeY * 1.6
     );
   }
-  update() {
-    if(this.isOpen && this.currentFrame === this.totalFrames - 1) return;
-    this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
-  }
   open(){
     this.isOpen = true;
+    this.animationStasis = true;
     this.openingAnimation();
   }
   close(){
-    this.isOpen = false;
+    this.animationStasis = false;
     this.closingAnimation();
     setTimeout(() => this.idle(), this.totalFrames * settings.animationSpeed);
   }
   idle(){
-    this.isOpen = false;
+    this.animationStasis = false;
     this.idleAnimation();
   }
   enter() {
@@ -114,7 +112,6 @@ export class Diamond extends GameObject {
     this.level.collectables.splice(index, 1);
   }
 }
-
 export class Player extends GameObject {
   constructor(pozX, pozY, asset, level) {
     super(pozX, pozY, asset, level, 11);
@@ -225,7 +222,6 @@ export class Player extends GameObject {
       velocity -= gravity;
     }, speed);
   }
-
   moveRight(x, jump = false){
     if(!is_UINT(x)){
       return;
@@ -252,8 +248,6 @@ export class Player extends GameObject {
         this.actions--;
       }
       else if(!jump && this.checkRightCollision()){
-        this.x = Math.floor(this.x);
-        this.y = Math.floor(this.y);
         clearInterval(moving);
         this.die();
         this.actions--;
@@ -276,8 +270,6 @@ export class Player extends GameObject {
     
     if(!jump)this.runAnimation();
     if(jump && this.checkLeftCollision(true)){
-      this.x = Math.floor(this.x);
-      this.y = Math.floor(this.y);
       this.die();
       this.actions--;
       return
@@ -306,14 +298,18 @@ export class Player extends GameObject {
   attack(){
     this.attackAnimation();
     this.actions++;
+    this.animationStasis = true;
     setTimeout(() => {
       this.idle()
       this.actions--;
+      this.animationStasis = false;
     }, settings.animationSpeed * this.totalFrames);
   }
   die(){
     bumped();
     this.bumped = true;
+    this.x = Math.floor(this.x);
+    this.y = Math.floor(this.y);
     this.dieAnimation();
     this.update = () => {
       if(this.currentFrame === this.totalFrames - 1) return;
@@ -399,4 +395,3 @@ export class Player extends GameObject {
     this.totalFrames = 8;
   }
 }
-

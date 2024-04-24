@@ -3,14 +3,7 @@ import getAssets from "./assets.js"
 import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
 
-window.settings = {
-  gameSpeed: 60,
-  animationSpeed: 60,
 
-  currentLevel: 3,
-  blackoutLevel: 1,
-  gameInterval: null,
-}
 
 const levels = [null];
 
@@ -62,6 +55,15 @@ const actionQueue = [
   //   moveBy: 4
   // },
 ];
+window.settings = {
+  gameSpeed: 60,
+  animationSpeed: 50,
+
+  currentLevel: 3,
+  blackoutLevel: 1,
+  gameInterval: null,
+  actionQueue: actionQueue
+}
 
 function setupGame(){
   for(let i = 1; i < levelsProperties.length; i++){
