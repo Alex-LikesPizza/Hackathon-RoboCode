@@ -59,7 +59,7 @@ window.settings = {
   gameSpeed: 60,
   animationSpeed: 50,
 
-  currentLevel: 3,
+  currentLevel: 1,
   blackoutLevel: 1,
   gameInterval: null,
   actionQueue: actionQueue

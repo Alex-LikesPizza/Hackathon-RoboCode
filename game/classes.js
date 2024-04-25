@@ -112,6 +112,7 @@ export class Diamond extends GameObject {
     this.level.collectables.splice(index, 1);
   }
 }
+
 export class Player extends GameObject {
   constructor(pozX, pozY, asset, level) {
     super(pozX, pozY, asset, level, 11);
@@ -168,6 +169,12 @@ export class Player extends GameObject {
     let col = Math.ceil(this.x + jump);
     return this.level.map[row][col] === 1
   }
+  checkTopCollision(){
+    let row = Math.floor(this.y - 0.01);
+    let col = Math[this.facing === "left"? "ceil" : "floor"](this.x);
+    if(!this.level.map[row]) return true;
+    return this.level.map[row][col] === 1 || this.level.map[row][col] === 3;
+  }
   idle(){
     if(this.x % 1 || this.y % 1)
       console.error("Decimal pozition detected in idle state: ",{x: this.x, y: this.y});
@@ -176,7 +183,7 @@ export class Player extends GameObject {
   }
   fall(jump = false) {
     this.actions++;
-    let gravity = jump ? 0.1 : 0.01;
+    let gravity = jump ? 0.1 : 0.08;
     let velocity = 0;
     let speed = settings.gameSpeed;
     this.falling = true;
@@ -216,7 +223,13 @@ export class Player extends GameObject {
         clearInterval(moving)
         this.fall(true);
         this.actions--;
-        return
+        return;
+      }
+      if (this.checkTopCollision()){
+        clearInterval(moving);
+        this.die();
+        this.fall();
+        return;
       }
       this.y -= velocity;
       velocity -= gravity;
@@ -252,8 +265,13 @@ export class Player extends GameObject {
         this.die();
         this.actions--;
       };
-      if(!jump && !this.checkBottomCollision()){
+      if(!jump && !this.checkBottomCollision() && !this.falling){
         this.fall();
+      }
+      if(this.bumped){
+        this.x -= step;
+        clearInterval(moving);
+        return;
       }
       i++;
     }, speed);
@@ -281,7 +299,7 @@ export class Player extends GameObject {
       if(i >= x / step){
         this.x = Math.ceil(this.x);
         clearInterval(moving);
-        if(!jump && !this.falling)this.idle();
+        if(!jump && !this.falling) this.idle();
         this.actions--;
       }
       else if(!jump && this.checkLeftCollision()){
@@ -289,8 +307,13 @@ export class Player extends GameObject {
         this.die();
         return;
       };
-      if(!jump && !this.checkBottomCollision()){
+      if(!jump && !this.checkBottomCollision() && !this.falling){
         this.fall();
+      }
+      if(this.bumped){
+        this.x += step;
+        clearInterval(moving);
+        return;
       }
       i++;
     }, speed);
@@ -306,11 +329,12 @@ export class Player extends GameObject {
     }, settings.animationSpeed * this.totalFrames);
   }
   die(){
+    console.log("aaa")
     bumped();
     this.bumped = true;
-    this.x = Math.floor(this.x);
-    this.y = Math.floor(this.y);
     this.dieAnimation();
+    this.x = Math[this.facing === "left"? "ceil" : "floor"](this.x);
+    this.y = Math.floor(this.y);
     this.update = () => {
       if(this.currentFrame === this.totalFrames - 1) return;
       this.currentFrame = (this.currentFrame + 1);
@@ -395,3 +419,4 @@ export class Player extends GameObject {
     this.totalFrames = 8;
   }
 }
+
