@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "lvl2.tmx",
+    "activeFile": "lvl3.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -41,8 +41,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 236.75,
-                "y": 158.25
+                "x": 241.75,
+                "y": 147.75
             }
         },
         "lvl4.tmx": {
@@ -64,12 +64,14 @@
     "openFiles": [
         "lvl1.tmx",
         "lvl3.tmx",
-        "lvl2.tmx"
+        "lvl2.tmx",
+        "lvl4.tmx"
     ],
     "project": "project.tiled-project",
     "recentFiles": [
         "lvl1.tmx",
-        "lvl3.tmx",
-        "lvl2.tmx"
+        "lvl4.tmx",
+        "lvl2.tmx",
+        "lvl3.tmx"
     ]
 }

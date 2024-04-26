@@ -1,0 +1,17 @@
+#game{
+  display: flex;
+  flex-direction: row;
+  
+}
+#game-code{
+  font-size: 1.2rem;
+  font-family: monospace, serif;
+  font-weight: 800;
+  height: 1fr;
+  width: 30ch;
+
+  resize: none;
+  background-color: beige;
+  border: none;
+  outline: none;
+}
