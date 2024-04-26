@@ -45,7 +45,7 @@ export default async function(){
   for(let folder in assets){
     for(let file in assets[folder]){
       let image = assets[folder][file];
-      image.src = `./game/sprites/${folder}/${file}.png`;
+      image.src = `./sprites/${folder}/${file}.png`;
 
       let promise = new Promise((resolve, reject) => {
         image.onload = () => resolve();

@@ -2,7 +2,7 @@ import { canvas, ctx, blackout, drawText } from "./canvas.js"
 import getAssets from "./assets.js"
 import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
-import { compile, tokenizeCode } from "./compiler.js"
+import { tokenizeCode } from "./compiler.js"
 
 
 
@@ -11,8 +11,8 @@ const levels = [null];
 let level = {};
 let player = {};
 
-let collectables = [];
-let actionQueue = [
+const collectables = [];
+const actionQueue = [
   // //lvl1
   // {
   //   command: "moveLeft",
@@ -189,17 +189,13 @@ function updateQueue(){
 
       player.exit();
       break }
-    case "start":
-    case "end": 
-      break;
   }
 }
 
 window.addEventListener("keypress", (e) => {
   const code = document.getElementById("game-code").value;
-  if(e.key === ";"){
-    window.gameRunning = true;
-    actionQueue = compile(code);
+  if(e.key === "Enter"){
+    tokenizeCode(code);
   }
   // if(e.key === 'd'){
   //   actionQueue.push({
