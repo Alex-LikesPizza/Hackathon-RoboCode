@@ -329,7 +329,6 @@ export class Player extends GameObject {
     }, settings.animationSpeed * this.totalFrames);
   }
   die(){
-    console.log("aaa")
     bumped();
     this.bumped = true;
     this.dieAnimation();
@@ -341,10 +340,11 @@ export class Player extends GameObject {
     }
   }
   enter(){
+    this.level.startDoor.enter();
     this.actions++;
     const drawCpy = this.draw;
     this.draw = () => {};
-
+    
     setTimeout(() => {
       this.draw = drawCpy;
       this.doorOut()
@@ -357,8 +357,9 @@ export class Player extends GameObject {
   }
   exit(){
     if(!is_validExit(this)){
-      return;
+      return null;
     }
+    this.level.endDoor.exit();
     this.actions++;
     this.doorIn();
     setTimeout(() => {

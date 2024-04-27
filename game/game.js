@@ -60,7 +60,7 @@ window.settings = {
   gameSpeed: 70,
   animationSpeed: 60,
 
-  currentLevel: 1,
+  currentLevel: 0,
   blackoutLevel: 1,
   gameInterval: null,
   actionQueue: actionQueue,
@@ -80,13 +80,13 @@ function setupGame(){
   advance(settings.currentLevel);
 }
 function advance(){
-  clearInterval(settings.gameInterval);
-  buildLevel(settings.currentLevel++);
+  endGame();
+  settings.currentLevel++;
+  buildLevel();
 }
-function buildLevel(id){
-  level = levels[id];
+function buildLevel(){
+  level = levels[settings.currentLevel];
   level.finished = false;
-  level.starting = true;
 
   level.startDoor = new Door(assets.door, level, "start");
   level.endDoor = new Door(assets.door, level, "end");
@@ -97,33 +97,44 @@ function buildLevel(id){
   level.collectables = collectables;
   player = new Player(level.startPoz.x, level.startPoz.y, assets.player, level);
   level.player = player;
-  startGame();
+  settings.blackoutLevel = 0;
+  gameLoop();
 }
 function startGame(){
+  const code = document.getElementById("game-code").value;
+  settings.gameRunning = true;
+  actionQueue = compile(code);
+
+  // settings.blackoutLevel = 1;
   settings.gameInterval = setInterval(gameLoop, settings.animationSpeed);
-  level.startDoor.enter();
-  player.enter()
+}
+function endGame(){
+  settings.gameRunning = false;
+  clearInterval(settings.gameInterval);
+  buildLevel();
 }
 
 function gameLoop(){
   drawPalette();
-  updateAnimations();
-  if(window.gameRunning){
+  if(settings.gameRunning){
+    updateAnimations();
     checks();
     if(player.actions === 0 && !player.bumped)
       updateQueue();
   }
+  if(level.finished){
+    advance();
+  }
 
-
-  if(level.starting){
+  if(settings.gameRunning){
     if(blackout(false)) level.starting = false;
     
     return;
   }
-  if(level.finished){
-    if(blackout(true)) advance();
-    return;
-  }
+  // if(level.finished){
+  //   if(blackout(true)) advance();
+  //   return;
+  // }
 }
 
 function drawPalette(){
@@ -163,6 +174,10 @@ function updateAnimations(){
 }
 
 function updateQueue(){
+  if(actionQueue === null){
+    endGame();
+    return;
+  }
   if(actionQueue.length === 0) return;
   const action = actionQueue.shift();
   switch(action.command){
@@ -185,21 +200,25 @@ function updateQueue(){
 
       player.attack();
       break }
-    case "enter": {
+    case "start":{
 
-      player.exit();
-      break }
-    case "start":
-    case "end": 
+      player.enter()
       break;
+    }
+    case "end":{
+
+      let success = player.exit();
+      if(success === null)
+        endGame();
+      break;
+    } 
   }
 }
 
 window.addEventListener("keypress", (e) => {
-  const code = document.getElementById("game-code").value;
+  
   if(e.key === ";"){
-    window.gameRunning = true;
-    actionQueue = compile(code);
+    startGame();
   }
   // if(e.key === 'd'){
   //   actionQueue.push({

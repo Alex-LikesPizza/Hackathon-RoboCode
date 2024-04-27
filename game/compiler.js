@@ -2,7 +2,7 @@ import { isStatement } from "./errors.js";
 
 export function tokenizeCode(code){
   let codeRows = code.split('\n');
-  codeRows = codeRows.map(row => row.split('#')[0].replace(/\s+/g, ' '));
+  codeRows = codeRows.map(row => row.split('#')[0].replace(/\s+/g, ' ').trim());
   return codeRows;
 }
 
