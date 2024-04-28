@@ -84,6 +84,8 @@ function advance(){
   settings.currentLevel++;
   buildLevel();
 }
+
+
 function buildLevel(){
   level = levels[settings.currentLevel];
   level.finished = false;
