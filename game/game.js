@@ -80,7 +80,7 @@ function setupGame(){
   advance(settings.currentLevel);
 }
 function advance(){
-  endGame();
+  if(settings.currentLevel !== 0) endGame();
   settings.currentLevel++;
   buildLevel();
 }
