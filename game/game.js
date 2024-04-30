@@ -2,7 +2,7 @@ import { canvas, ctx, blackout, drawText } from "./canvas.js"
 import getAssets from "./assets.js"
 import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
-import { compile, tokenizeCode } from "./compiler.js"
+import { compile } from "./compiler.js"
 
 
 
