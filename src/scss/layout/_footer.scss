@@ -1,0 +1,6 @@
+.footer{
+  height: 3rem;
+  margin-top: 2rem;
+  @include borderFade;
+  background-color: rgba($midnight, 0.6);
+}

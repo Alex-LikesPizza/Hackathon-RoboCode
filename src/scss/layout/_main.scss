@@ -1,0 +1,12 @@
+.page-container{
+  background-color: $game-black;
+  background-image: linear-gradient(to right, rgba($game-black, 0.3), rgba($game-black, 0.3), rgba($game-black, 0.3)), url("./images/background.png");
+  background-repeat: repeat-y;
+  background-size: 90vw;
+  background-position: center;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
