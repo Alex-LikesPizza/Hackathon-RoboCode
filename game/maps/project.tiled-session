@@ -16,8 +16,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 279.5,
-                "y": 507
+                "x": 278.5,
+                "y": 505
             }
         },
         "decorations.tsx": {
@@ -49,8 +49,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 241.25,
-                "y": 147.5
+                "x": 240,
+                "y": 159.75
             }
         },
         "lvl4.tmx": {
@@ -78,10 +78,10 @@
     ],
     "project": "project.tiled-project",
     "recentFiles": [
+        "background.tmx",
         "lvl1.tmx",
         "lvl3.tmx",
         "lvl2.tmx",
-        "lvl4.tmx",
-        "background.tmx"
+        "lvl4.tmx"
     ]
 }

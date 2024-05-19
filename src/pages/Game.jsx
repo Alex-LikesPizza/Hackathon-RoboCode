@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { initGame } from "../game/game"
+import initGame from "../game/game"
 
 const Game = () => {
   const canvasRef = React.useRef();

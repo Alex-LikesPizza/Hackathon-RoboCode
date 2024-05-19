@@ -265,9 +265,8 @@ window.addEventListener("keypress", (e) => {
 });
 
 const assets = {};
-getAssets()
-.then((loadedAssets) => {
+getAssets().then((loadedAssets) => {
   Object.assign(assets, loadedAssets);
+  console.log("a");
   setupGame();
 });
-
