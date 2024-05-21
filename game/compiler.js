@@ -5,7 +5,6 @@ function tokenizeCode(code){
   codeRows = codeRows.map(row => row.split('#')[0].replace(/\s+/g, ' ').trim());
   return codeRows;
 }
-
 function compileCode(tokenizedCode){
   let actions = [];
   for (let tokenizedRow of tokenizedCode) {
@@ -54,7 +53,7 @@ function compileCode(tokenizedCode){
 }
 
 function compileIfStatement(tokens){
-  let negate = false;
+
   /*
     if facing door/wall/diamond...
     if not facing door/wall/diamond...
@@ -62,14 +61,46 @@ function compileIfStatement(tokens){
     if on floor or facing door
     if on floor and facing wall or facing door
     if on door or facing door and on platform
-
-
   */
   for(let token of tokens){
 
   }
+
+  return {command: "jump", direction: "up"};
 }
 
+export function compressIfStatement(args){
+  let exp = "";
+  for(let arg of args){
+    if(arg === "and") exp += "&";
+    else if(arg === "or") exp += "|";
+    else if(arg === "not") exp += "!";
+    else exp += "-" + arg + "-";
+
+    // switch(arg){
+    //   case "and":
+    //     exp += "&";
+    //     break;
+    //   case "or":
+    //     exp += "|";
+    //     break;
+    //   case "not":
+    //     exp += "!"
+    //   case "facing_floor":
+    //     exp += "O-"
+    //   // case "floor":
+    //   // case "diamond":
+    //   // case "wall":
+    //   //   exp += `obj-${arg}-`;
+    //   //   break;
+    //   // case "facing":
+    //   // case "on":
+    //   // case "under":
+        
+    // }
+  }
+  return exp;
+}
 
 export function compile(code){
   const tokenizedCode = tokenizeCode(code);

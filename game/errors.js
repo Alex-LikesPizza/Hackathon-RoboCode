@@ -1,3 +1,5 @@
+import { compressIfStatement } from "./compiler.js";
+
 function invalid_UINT(x){
   console.error(x + " is not a valid positive integer");
 };
@@ -73,8 +75,12 @@ export function is_argumentNumberCorrect(n, argLen){
 export function bumped(){
   console.error("You bumped into a wall");
 }
+export function is_ifStatementCorrect(args){
+  console.log(compressIfStatement(args));
+
+}
 export function isCommand(command){
-  const commands = ["start", "end", "walk", "jump", "attack", ""];
+  const commands = ["start", "end", "walk", "jump", "attack", "", "if"];
   if(!commands.includes(command)){
     invalid_command(command);
     return false;
@@ -105,6 +111,9 @@ export function isStatement(statement){
     case "end": {
       if(!is_argumentNumberCorrect(0, argsLen)) return false;
       return true;
+    }
+    case "if": {
+      if(is_ifStatementCorrect(args)) return true;
     }
     case "": return true;
     default: {

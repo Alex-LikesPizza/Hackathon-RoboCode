@@ -82,7 +82,6 @@ function setupGame(){
 function advance(){
   if(settings.currentLevel !== 0) endGame();
   settings.currentLevel++;
-  console.log("Before:", collectables);
   buildLevel();
 }
 
@@ -93,12 +92,10 @@ function buildLevel(){
 
   level.startDoor = new Door(assets.door, level, "start");
   level.endDoor = new Door(assets.door, level, "end");
-  console.log("Before:", collectables);
   collectables = [];
   level.diamonds.forEach(diamond => {
     collectables.push(new Diamond(diamond.x, diamond.y, assets.diamond, level));
   });
-  console.log("After:", collectables)
   level.collectables = collectables;
   player = new Player(level.startPoz.x, level.startPoz.y, assets.player, level);
   level.player = player;
