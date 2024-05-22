@@ -1,5 +1,3 @@
-import { compressIfStatement } from "./compiler.js";
-
 function invalid_UINT(x){
   console.error(x + " is not a valid positive integer");
 };
@@ -20,6 +18,9 @@ function invalid_command(command){
 }
 function invalid_argumentNumber(exceeding){
   console.error(`${exceeding? "Too many": "Insufficient"} arguments`);
+}
+function invalid_ifStatement(){
+  console.error(`Invalid if statement`);
 }
 
 export function is_validExit(player){
@@ -76,8 +77,45 @@ export function bumped(){
   console.error("You bumped into a wall");
 }
 export function is_ifStatementCorrect(args){
-  console.log(compressIfStatement(args));
+  let actionList = [
+    "facing_left", "facing_right", "facing_diamond", "facing_wall", 
+    "on_platform", "on_floor",
+    "can_jump_up", "can_jump_left", "can_jump_right"
+  ];
 
+  let prevType = "combine";
+  let isValid = true;
+  for(let arg of args){
+    let isAction = actionList.includes(arg)
+    if(prevType === "negate"){
+      prevType = "action";
+      if(isAction) continue;
+      else isValid = false;
+    }
+    if(prevType === "combine"){
+
+      if(isAction){
+        prevType = "action";
+        continue;
+      }
+      else if(arg === "not"){
+        prevType = "negate"
+        continue;
+      }
+      else isValid = false;
+    }
+    if(prevType === "action"){
+      if(arg === "not") prevType = "negate";
+      else if(arg === "and" || arg === "or") prevType = "combine";
+      else isValid = false;
+    }
+
+    if(isValid === false) {
+      invalid_ifStatement(); 
+      break;
+    }
+  }
+  return isValid;
 }
 export function isCommand(command){
   const commands = ["start", "end", "walk", "jump", "attack", "", "if"];
@@ -113,7 +151,7 @@ export function isStatement(statement){
       return true;
     }
     case "if": {
-      if(is_ifStatementCorrect(args)) return true;
+      if(!is_ifStatementCorrect(args)) return false;
     }
     case "": return true;
     default: {

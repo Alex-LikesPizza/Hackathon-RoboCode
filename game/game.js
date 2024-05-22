@@ -3,6 +3,7 @@ import getAssets from "./assets.js"
 import { Diamond, Player, Door } from "./classes.js"
 import { Level, levelsProperties } from "./levels.js"
 import { compile } from "./compiler.js"
+import { getIfStatementValue } from "./compiler.js"
 
 
 
@@ -213,7 +214,15 @@ function updateQueue(){
       if(success === null)
         endGame();
       break;
-    } 
+    }
+    case "if":{
+      let args = action.args;
+
+      let completeNextAction = getIfStatementValue(args, level);
+      if(completeNextAction) updateQueue();
+      else actionQueue.shift();
+      break;
+    }
   }
 }
 

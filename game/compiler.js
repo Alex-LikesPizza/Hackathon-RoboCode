@@ -42,7 +42,7 @@ function compileCode(tokenizedCode){
         break;
       }
       case "if": {
-        action = compileIfStatement(args);
+        action = {command: "if", args: args};
         break;
       }
     }
@@ -52,55 +52,113 @@ function compileCode(tokenizedCode){
   return actions;
 }
 
-function compileIfStatement(tokens){
-
-  /*
-    if facing door/wall/diamond...
-    if not facing door/wall/diamond...
-    if on floor/platform...
-    if on floor or facing door
-    if on floor and facing wall or facing door
-    if on door or facing door and on platform
-  */
-  for(let token of tokens){
-
-  }
-
-  return {command: "jump", direction: "up"};
-}
-
-export function compressIfStatement(args){
-  let exp = "";
+function evaluateLogicalExpression(args, level){
+  let i = 0;
   for(let arg of args){
-    if(arg === "and") exp += "&";
-    else if(arg === "or") exp += "|";
-    else if(arg === "not") exp += "!";
-    else exp += "-" + arg + "-";
+    if(arg === "facing_left"){
+      if(level.player.facing === "left") 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "facing_right"){
+      if(level.player.facing === "right") 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "facing_wall"){ 
+      let x = level.player.x + (level.player.facing === "left"? -1 : 1);
+      let y = level.player.y;
+      if(level.map[y][x] === 1) 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "facing_diamond"){ 
+      let x = level.player.x + (level.player.facing === "left"? -1 : 1);
+      let y = level.player.y;
+      let diamonds = level.diamonds;
+      if(diamonds.some(obj => obj.x === x && obj.y === y))
+        args[i] = true;
+      else args[i] = false;
+    }
 
-    // switch(arg){
-    //   case "and":
-    //     exp += "&";
-    //     break;
-    //   case "or":
-    //     exp += "|";
-    //     break;
-    //   case "not":
-    //     exp += "!"
-    //   case "facing_floor":
-    //     exp += "O-"
-    //   // case "floor":
-    //   // case "diamond":
-    //   // case "wall":
-    //   //   exp += `obj-${arg}-`;
-    //   //   break;
-    //   // case "facing":
-    //   // case "on":
-    //   // case "under":
-        
-    // }
+    else if(arg === "on_platform"){
+      let x = level.player.x;
+      let y = level.player.y + 1;
+      if(level.map[y][x] === 2) 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "on_floor"){
+      let x = level.player.x;
+      let y = level.player.y + 1;
+      if(level.map[y][x] === 1) 
+        args[i] = true;
+      else args[i] = false;
+    }
+
+    else if(arg === "can_jump_up"){
+      let x = level.player.x;
+      let y = level.player.y - 1;
+      if(level.map[y][x] === 0) 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "can_jump_right"){
+      let x = level.player.x + 1;
+      let y = level.player.y - 1;
+      if(level.map[y][x] === 0) 
+        args[i] = true;
+      else args[i] = false;
+    }
+    else if(arg === "can_jump_left"){
+      let x = level.player.x - 1;
+      let y = level.player.y - 1;
+      if(level.map[y][x] === 0) 
+        args[i] = true;
+      else args[i] = false;
+    }
+
+
+    i++;
   }
-  return exp;
+  return args;
 }
+export function getIfStatementValue(args, level){
+  args = evaluateLogicalExpression(args, level);
+  let filter = [];
+  let notNext = false;
+  args.forEach(value => {
+    if(notNext){
+      filter.push(!value);
+      notNext = false;
+    }
+    else if(value === "not"){
+      notNext = true;
+    }
+    else filter.push(value);
+  });
+
+  let ands = [];
+  filter.forEach((value, i) => {if(value === "and") ands.push(i)});
+  for(let i of ands){
+    let leftVal = filter[i - 1];
+    let rightVal = filter[i + 1];
+    let evaluatedValue = leftVal && rightVal;
+    filter.splice(i - 1, 3, evaluatedValue);
+  }
+
+  let ors = [];
+  filter.forEach((value, i) => {if(value === "or") ors.push(i)});
+  for(let i of ors){
+    let leftVal = filter[i - 1];
+    let rightVal = filter[i + 1];
+    let evaluatedValue = leftVal || rightVal;
+    filter.splice(i - 1, 3, evaluatedValue);
+  }
+
+  return filter[0];
+}
+
 
 export function compile(code){
   const tokenizedCode = tokenizeCode(code);
