@@ -1,4 +1,4 @@
-import { isStatement } from "./errors.js";
+import { isStatement, is_validBrackets } from "./errors.js";
 
 function tokenizeCode(code){
   let codeRows = code.split('\n');
@@ -7,6 +7,8 @@ function tokenizeCode(code){
 }
 function compileCode(tokenizedCode){
   let actions = [];
+  let actionStacks = [];
+  let openBrackets = 0;
   for (let tokenizedRow of tokenizedCode) {
     if(!isStatement(tokenizedRow)) return null;
     if(tokenizedRow === "") continue;
@@ -17,10 +19,6 @@ function compileCode(tokenizedCode){
     switch(command){
       case "walk": {
         let command = args[0] === "right"? "moveRight" : "moveLeft";
-        // if(actions[actions.length - 1].command === command) {
-        //   actions[actions.length - 1].moveBy++;
-        //   continue;
-        // }
         action = {command, moveBy: 1};
         break;
       }
@@ -33,26 +31,40 @@ function compileCode(tokenizedCode){
         action = {command: "attack"};
         break;
       }
-      case "start": {
-        action = {command: "start"};
-        break;
+      case "{": {
+        actionStacks.push([]);
+        openBrackets++;
+        continue;
       }
-      case "end": {
-        action = {command: "end"};
+      case "}": {
+        openBrackets--;
+        is_validBrackets(openBrackets);
+        if(openBrackets < 0) return null;
+        
+        let compoundActions = actionStacks.pop();
+        action = {command: "compound", actions: compoundActions}
         break;
       }
       case "if": {
         action = {command: "if", args: args};
         break;
       }
+      case "while": {
+        action = {command: "while", args: args};
+      }
     }
-    actions.push(action);
+    if(openBrackets) actionStacks.at(-1).push(action);
+    else actions.push(action);
   }
+  is_validBrackets(openBrackets, true);
+  if(openBrackets !== 0) return null;
 
+  actions.push({command: "end"});
   return actions;
 }
 
 function evaluateLogicalExpression(args, level){
+  args = JSON.parse(JSON.stringify(args));
   let i = 0;
   for(let arg of args){
     if(arg === "facing_left"){

@@ -61,7 +61,7 @@ window.settings = {
   gameSpeed: 70,
   animationSpeed: 60,
 
-  currentLevel: 1,
+  currentLevel: 0,
   blackoutLevel: 1,
   gameInterval: null,
   actionQueue: actionQueue,
@@ -123,7 +123,7 @@ function gameLoop(){
     updateAnimations();
     checks();
     if(player.actions === 0 && !player.bumped)
-      updateQueue();
+      actionQueue = updateQueue(actionQueue, level);
   }
   if(level.finished){
     advance();
@@ -176,13 +176,16 @@ function updateAnimations(){
   collectables.forEach((collectable) => collectable.update());
 }
 
-function updateQueue(){
+function updateQueue(actionQueue, level){
+  let player = level.player;
   if(actionQueue === null){
     endGame();
     return;
   }
-  if(actionQueue.length === 0) return;
+  console.log(actionQueue);
+  if(!actionQueue || actionQueue.length === 0) return;
   const action = actionQueue.shift();
+
   switch(action.command){
     case "moveRight": {
       let moveBy = action.moveBy;
@@ -202,10 +205,6 @@ function updateQueue(){
     case "attack": {
 
       player.attack();
-      break }
-    case "start":{
-
-      player.enter()
       break;
     }
     case "end":{
@@ -213,17 +212,39 @@ function updateQueue(){
       let success = player.exit();
       if(success === null)
         endGame();
+
+      break;
+    }
+    case "compound": {
+      let actions = action.actions;
+      actionQueue.unshift(...actions);
       break;
     }
     case "if":{
       let args = action.args;
 
       let completeNextAction = getIfStatementValue(args, level);
-      if(completeNextAction) updateQueue();
+      if(completeNextAction) actionQueue = updateQueue(actionQueue, level);
       else actionQueue.shift();
       break;
     }
+    case "while":{
+      let args = action.args;
+
+      let completeNextAction = getIfStatementValue(args, level);
+      if(completeNextAction){
+        actionQueue.unshift(action);
+        actionQueue.unshift(actionQueue[1]);
+      }
+      else{
+        actionQueue.shift();
+      }
+      console.log(actionQueue, action);
+      break;
+    }
   }
+  
+  return actionQueue;
 }
 
 window.addEventListener("keypress", (e) => {

@@ -5,7 +5,7 @@ function invalid_direction(direction, walking = false){
   console.error(`"${direction}" is not a valid ${walking? "walkable " : ""}direction`);
 }
 function invalid_doorAccessPosition(){
-  console.error("You need to be on the door to access it");
+  console.error("You did not reach the end door");
 }
 function invalid_doorOpenState(){
   console.error("The door needs to be open to access it.\n Collect all diamonds to open it");
@@ -21,6 +21,12 @@ function invalid_argumentNumber(exceeding){
 }
 function invalid_ifStatement(){
   console.error(`Invalid if statement`);
+}
+function invalid_closedBrackets(){
+  console.error(`Closed brackets without opening`);
+}
+function invalid_openBrackets(){
+  console.error(`Not all brackets are closed`);
 }
 
 export function is_validExit(player){
@@ -76,7 +82,14 @@ export function is_argumentNumberCorrect(n, argLen){
 export function bumped(){
   console.error("You bumped into a wall");
 }
+export function is_validBrackets(openBrackets, final = false){
+  if(openBrackets < 0) invalid_closedBrackets();
+  if(final && openBrackets !== 0) invalid_openBrackets();
+}
 export function is_ifStatementCorrect(args){
+  if(args.length === 0) {
+    invalid_argumentNumber(false);
+  }
   let actionList = [
     "facing_left", "facing_right", "facing_diamond", "facing_wall", 
     "on_platform", "on_floor",
@@ -118,7 +131,7 @@ export function is_ifStatementCorrect(args){
   return isValid;
 }
 export function isCommand(command){
-  const commands = ["start", "end", "walk", "jump", "attack", "", "if"];
+  const commands = ["{", "}", "walk", "jump", "attack", "", "if", "while"];
   if(!commands.includes(command)){
     invalid_command(command);
     return false;
@@ -145,18 +158,25 @@ export function isStatement(statement){
       return true;
     }
     case "attack":
-    case "start":
-    case "end": {
+    case "{": {
+      if(!is_argumentNumberCorrect(0, argsLen)) return false;
+      return true;
+    }
+    case "}": {
       if(!is_argumentNumberCorrect(0, argsLen)) return false;
       return true;
     }
     case "if": {
       if(!is_ifStatementCorrect(args)) return false;
+      return true
+    }
+    case "while":{
+      if(!is_ifStatementCorrect(args)) return false
+      return true;
     }
     case "": return true;
     default: {
       return false;
     }
-    
   }
 }
