@@ -1,3 +1,34 @@
 .contacts{
   align-self: center;
 }
+
+
+.form{
+  background-color: rgba($midnight, 0.4);
+  padding: 1rem 25%;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  &__label{
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
+  }
+  &__field{
+    font-size: 1.4rem;
+    border-radius: 0.5rem;
+    background-color: $midnight;
+    color: $white;
+  }
+  &__textarea{
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    background-color: $midnight;
+    color: $white;
+  }
+  &__submit{
+    width: fit-content;
+    padding: 0.5rem 1.2rem;
+    margin-top: 1rem;
+    align-self: flex-end;
+  }
+}

@@ -1,0 +1,28 @@
+@mixin button{
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: $white;
+  transition: 0.3s all;
+  cursor: pointer;
+}
+.button{  
+  &__primary{
+    @include button;
+    background-color: $primary;
+
+    &:hover{
+     background-color: darken($primary, 8%);  
+    }
+  }
+  &__dark{
+    @include button;
+    background-color: $midnight;  
+
+    &:hover{
+      background-color: lighten($midnight, 8%);
+    }
+  }
+
+  
+}

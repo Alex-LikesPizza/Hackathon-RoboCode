@@ -13,6 +13,37 @@ body {
 .home {
   align-self: center; }
 
+.game {
+  align-self: center; }
+
+.contacts {
+  align-self: center; }
+
+.form {
+  background-color: rgba(37, 40, 43, 0.4);
+  padding: 1rem 25%;
+  color: white;
+  display: flex;
+  flex-direction: column; }
+  .form__label {
+    font-size: 1.6rem;
+    margin-top: 0.5rem; }
+  .form__field {
+    font-size: 1.4rem;
+    border-radius: 0.5rem;
+    background-color: #25282B;
+    color: white; }
+  .form__textarea {
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    background-color: #25282B;
+    color: white; }
+  .form__submit {
+    width: fit-content;
+    padding: 0.5rem 1.2rem;
+    margin-top: 1rem;
+    align-self: flex-end; }
+
 .header {
   display: flex;
   justify-content: space-evenly;
@@ -20,7 +51,7 @@ body {
   font-family: "Pixelify Sans", monospace;
   background-color: rgba(37, 40, 43, 0.6);
   padding: 3rem 0 1rem 0;
-  margin-bottom: 2rem;
+  margin-bottom: 5rem;
   box-shadow: 0 0 2rem 2rem rgba(37, 40, 43, 0.6);
   user-select: none;
   -moz-user-select: none; }
@@ -42,7 +73,7 @@ body {
 
 .footer {
   height: 3rem;
-  margin-top: 2rem;
+  margin-top: 5rem;
   box-shadow: 0 0 2rem 2rem rgba(37, 40, 43, 0.6);
   background-color: rgba(37, 40, 43, 0.6); }
 
@@ -51,8 +82,30 @@ body {
   background-image: linear-gradient(to right, rgba(63, 56, 81, 0.3), rgba(63, 56, 81, 0.3), rgba(63, 56, 81, 0.3)), url("./images/background.png");
   background-repeat: repeat-y;
   background-size: 90vw;
-  background-position: center;
+  background-position: center top;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
+
+.button__primary {
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  transition: 0.3s all;
+  cursor: pointer;
+  background-color: orangered; }
+  .button__primary:hover {
+    background-color: #d63a00; }
+
+.button__dark {
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  transition: 0.3s all;
+  cursor: pointer;
+  background-color: #25282B; }
+  .button__dark:hover {
+    background-color: #383c41; }

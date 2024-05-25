@@ -1,16 +1,14 @@
 import React from 'react'
 
-import initGame from "../game/game"
-
 const Game = () => {
   const canvasRef = React.useRef();
   const codeRef = React.useRef();
 
-  React.useEffect(() => {
-    const canvas = canvasRef.current;
-    const code = codeRef.current;
-    initGame(canvas, code);
-  }, []);
+  // React.useEffect(() => {
+  //   const canvas = canvasRef.current;
+  //   const code = codeRef.current;
+  //   initGame(canvas, code);
+  // }, []);
 
   return (
     <section className='game'>
