@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { db } from "../../firebaseConfig";
+import { db } from "../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 
 async function addMessage(data){
@@ -103,6 +103,7 @@ const Form = () => {
 
   return (
     <form className='form' onSubmit={submitForm}>
+      <h2 style={{textAlign: 'center'}}>Contact us via form:</h2>
       <label className='form__label' htmlFor="form-name">Name: </label>
       <input
         className='form__field'

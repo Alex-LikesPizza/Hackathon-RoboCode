@@ -11,6 +11,7 @@
     "compile-scss": "node-sass src/scss/index.scss src/app.css -w"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "firebase": "^10.12.1",
     "node-sass": "^9.0.0",
     "react": "^18.2.0",

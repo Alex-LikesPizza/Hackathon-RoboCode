@@ -44,6 +44,26 @@ body {
     margin-top: 1rem;
     align-self: flex-end; }
 
+.hyperlinks {
+  color: white;
+  background-color: rgba(37, 40, 43, 0.4);
+  margin-top: 4rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.6rem; }
+  .hyperlinks ul {
+    list-style: none;
+    text-decoration: none; }
+  .hyperlinks a {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s all; }
+    .hyperlinks a:hover {
+      color: orangered; }
+  .hyperlinks i {
+    letter-spacing: 0.4rem; }
+
 .header {
   display: flex;
   justify-content: space-evenly;
