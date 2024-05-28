@@ -1,4 +1,4 @@
-export default async function(){
+async function getAssets(){
   const assets = {
     player: {
       attack: new Image(),

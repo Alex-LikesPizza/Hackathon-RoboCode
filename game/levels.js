@@ -1,6 +1,4 @@
-import { canvas, ctx } from "./canvas.js";
-
-export const levelsProperties = [
+const levelsProperties = [
   null,
   { map: [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -74,7 +72,7 @@ export const levelsProperties = [
   
 ]
 
-export class Level{
+class Level{
   constructor(nr, map, assets){
     this.sizeY = map.length;
     this.sizeX = map[0].length;

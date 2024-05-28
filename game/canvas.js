@@ -1,7 +1,7 @@
-export const canvas = document.getElementById("game-canvas");
-export const ctx = canvas.getContext("2d");
+// const canvas = document.getElementById("game-canvas");
+// const ctx = canvas.getContext("2d");
 
-export function blackout(isIncreasing){
+function blackout(isIncreasing){
   settings.blackoutLevel += 0.1 * (isIncreasing? 1 : -1);
   if(isIncreasing && settings.blackoutLevel >= 0.99){
     settings.blackoutLevel = 1;
@@ -15,7 +15,7 @@ export function blackout(isIncreasing){
   return false;
 }
 
-export function drawText(level) {
+function drawText(level) {
   const levelId = String(level.nr).padStart(2, '0');
   ctx.fillStyle = "rgb(255, 255, 255)";
   ctx.strokeStyle = "rgb(110, 110, 110)";

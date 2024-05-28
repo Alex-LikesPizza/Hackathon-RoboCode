@@ -1,5 +1,3 @@
-import { ctx } from "./canvas.js";
-import { bumped, is_UINT, is_direction, is_validExit } from "./errors.js";
 class GameObject {
   constructor(pozX, pozY, assets, level, totalFrames) {
     this.x = pozX;
@@ -20,7 +18,7 @@ class GameObject {
     this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
   }
 }
-export class Door extends GameObject {
+class Door extends GameObject {
   constructor(assets, level, type){
     super(level[`${type}Poz`].x, level[`${type}Poz`].y, assets, level, 1);
     this.type = type;
@@ -82,7 +80,7 @@ export class Door extends GameObject {
   }
 
 }
-export class Diamond extends GameObject {
+class Diamond extends GameObject {
   constructor(pozX, pozY, asset, level) {
     super(pozX, pozY, asset, level, 10);
   }
@@ -113,7 +111,7 @@ export class Diamond extends GameObject {
   }
 }
 
-export class Player extends GameObject {
+class Player extends GameObject {
   constructor(pozX, pozY, asset, level) {
     super(pozX, pozY, asset, level, 11);
     this.facing = "right";
@@ -329,7 +327,7 @@ export class Player extends GameObject {
     }, settings.animationSpeed * this.totalFrames);
   }
   die(){
-    bumped();
+    invalid_bumped();
     this.bumped = true;
     this.dieAnimation();
     this.x = Math[this.facing === "left"? "ceil" : "floor"](this.x);

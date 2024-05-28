@@ -1,12 +1,3 @@
-import { canvas, ctx, blackout, drawText } from "./canvas.js"
-import getAssets from "./assets.js"
-import { Diamond, Player, Door } from "./classes.js"
-import { Level, levelsProperties } from "./levels.js"
-import { compile } from "./compiler.js"
-import { getIfStatementValue } from "./compiler.js"
-
-
-
 const levels = [null];
 
 let level = {};
@@ -104,7 +95,7 @@ function buildLevel(){
   gameLoop();
 }
 function startGame(){
-  const code = document.getElementById("game-code").value;
+  const code = codeDOM.value;
   settings.gameRunning = true;
   actionQueue = compile(code);
 
@@ -297,6 +288,12 @@ window.addEventListener("keypress", (e) => {
 const assets = {};
 getAssets().then((loadedAssets) => {
   Object.assign(assets, loadedAssets);
-  console.log("a");
-  setupGame();
+  
+  function checkDOMLoaded() {
+    if(window.settings.DOMLoaded === true) setupGame();      
+    else {
+      setTimeout(() => checkDOMLoaded(), 100);
+    }
+  }
+  checkDOMLoaded();
 });

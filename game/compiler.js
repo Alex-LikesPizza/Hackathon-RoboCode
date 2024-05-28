@@ -1,5 +1,3 @@
-import { isStatement, is_validBrackets } from "./errors.js";
-
 function tokenizeCode(code){
   let codeRows = code.split('\n');
   codeRows = codeRows.map(row => row.split('#')[0].replace(/\s+/g, ' ').trim());
@@ -135,7 +133,7 @@ function evaluateLogicalExpression(args, level){
   }
   return args;
 }
-export function getIfStatementValue(args, level){
+function getIfStatementValue(args, level){
   args = evaluateLogicalExpression(args, level);
   let filter = [];
   let notNext = false;
@@ -172,7 +170,7 @@ export function getIfStatementValue(args, level){
 }
 
 
-export function compile(code){
+function compile(code){
   const tokenizedCode = tokenizeCode(code);
   const compiledCode = compileCode(tokenizedCode);
 

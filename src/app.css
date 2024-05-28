@@ -16,6 +16,73 @@ body {
 .game {
   align-self: center; }
 
+.game {
+  background-color: rgba(37, 40, 43, 0.95);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem; }
+  .game__code-container {
+    flex-grow: 1;
+    font-size: 1.2rem;
+    border-left: 1px solid #25282B;
+    display: flex;
+    flex-direction: column; }
+  .game__code-heading {
+    display: inline-block;
+    width: 50%;
+    color: white;
+    text-align: center;
+    background-color: #443c57;
+    border: 1px solid #25282B;
+    border-left: none;
+    transition: 0.2s all;
+    cursor: pointer;
+    font-family: "Pixelify Sans", monospace; }
+    .game__code-heading--selected {
+      background-color: #4d4563; }
+  .game__code-section, .game__code-section:active {
+    font-size: 1.2rem;
+    flex: 1;
+    width: 100%;
+    background-color: #332e42;
+    resize: none;
+    color: white;
+    outline: none;
+    border: none;
+    padding: 0.2rem; }
+  .game__container {
+    width: 100%;
+    display: flex;
+    outline: 0.5rem solid #cecece55;
+    outline-style: groove; }
+  .game__canvas {
+    width: 800px;
+    height: 533px; }
+  .game__control {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    cursor: pointer;
+    color: white;
+    font-family: "Pixelify Sans", monospace; }
+    .game__control:first-child {
+      background-color: #007600; }
+      .game__control:first-child:hover {
+        background-color: #006700; }
+    .game__control:last-child {
+      background-color: #db3b00; }
+      .game__control:last-child:hover {
+        background-color: #c23400; }
+    .game__control .bi-gear {
+      display: inline-block;
+      transform: scale(1.05) translateY(1px); }
+    .game__control .bi-play {
+      display: inline-block;
+      transform: scale(1.4) translateY(1px); }
+
 .contacts {
   align-self: center; }
 
