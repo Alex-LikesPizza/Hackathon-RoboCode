@@ -1,0 +1,21 @@
+------ LVL 5 ------
+walk right
+jump right
+while not facing_diamond
+{
+  if facing_left
+  {
+    while not facing_wall
+      walk left
+    walk right
+  }
+  if facing_right
+  {
+    while not facing_wall and not facing_diamond
+      walk right
+    if not facing_diamond
+      walk left
+  }
+}
+walk right
+walk left

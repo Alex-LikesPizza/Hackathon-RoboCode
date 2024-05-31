@@ -12,7 +12,7 @@ async function addMessage(data){
   }
 }
 
-const Form = () => {
+const Form = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -100,9 +100,8 @@ const Form = () => {
       alert("Could not send data. Please try again later");
       });
   }
-
   return (
-    <form className='form' onSubmit={submitForm}>
+    <form {...props} className='form' onSubmit={submitForm}>
       <h2 style={{textAlign: 'center'}}>Contact us via form:</h2>
       <label className='form__label' htmlFor="form-name">Name: </label>
       <input
