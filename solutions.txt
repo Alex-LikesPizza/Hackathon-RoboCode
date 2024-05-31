@@ -1,3 +1,23 @@
+
+------ LVL 1 ------
+walk left
+while not facing_diamond
+ walk right
+walk right
+walk left
+
+4 instructiuni
+------ LVL 4 ------
+while not facing_wall
+ walk right
+while can_jump_left
+ jump left
+while not facing_wall
+ walk left
+while can_jump_right
+ jump right
+
+8 instructiuni
 ------ LVL 5 ------
 walk right
 jump right
@@ -19,3 +39,5 @@ while not facing_diamond
 }
 walk right
 walk left
+
+14 instructiuni
