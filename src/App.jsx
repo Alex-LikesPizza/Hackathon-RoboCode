@@ -8,7 +8,7 @@ import Game from './pages/Game';
 import Contacts from './pages/Contacts';
 
 function App() {
-  const [ currentPage, setCurrentPage ] = React.useState("Game")
+  const [ currentPage, setCurrentPage ] = React.useState("Home")
   
   return (
     <main className="page-container">

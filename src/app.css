@@ -195,6 +195,10 @@ body {
     width: 22rem;
     height: 25rem;
     object-fit: cover; }
+  @media (max-width: 1100px) {
+    .slide {
+      flex-direction: column;
+      align-items: center; } }
 
 .contacts {
   align-self: center; }
@@ -223,6 +227,9 @@ body {
     padding: 0.5rem 1.2rem;
     margin-top: 1rem;
     align-self: flex-end; }
+  @media (max-width: 650px) {
+    .form {
+      padding: 1rem 5%; } }
 
 .hyperlinks {
   color: whitesmoke;
@@ -250,7 +257,7 @@ body {
   font-size: 2.2rem;
   font-family: "Pixelify Sans", monospace;
   background-color: rgba(37, 40, 43, 0.6);
-  padding: 3rem 0 1rem 0;
+  padding: 3rem 1rem 1rem 1rem;
   margin-bottom: 5rem;
   box-shadow: 0 0 2rem 2rem rgba(37, 40, 43, 0.6);
   user-select: none;
@@ -270,6 +277,10 @@ body {
     margin-top: -1rem;
     color: orange;
     cursor: pointer; }
+  @media (max-width: 550px) {
+    .header {
+      font-size: 1.8rem;
+      justify-content: space-between; } }
 
 .footer {
   height: 3rem;

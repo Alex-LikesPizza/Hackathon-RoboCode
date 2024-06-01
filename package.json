@@ -13,7 +13,6 @@
   "dependencies": {
     "@splidejs/react-splide": "^0.7.12",
     "@splidejs/splide": "^4.1.4",
-    "aos": "^2.3.4",
     "bootstrap-icons": "^1.11.3",
     "firebase": "^10.12.1",
     "node-sass": "^9.0.0",

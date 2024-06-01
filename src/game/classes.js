@@ -354,7 +354,7 @@ class Player extends GameObject {
     
     setTimeout(() => {
       this.draw = drawCpy;
-      this.doorOut()
+      this.doorOut();
       
       setTimeout(() => {
         this.idle();

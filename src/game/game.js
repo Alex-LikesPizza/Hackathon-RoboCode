@@ -10,7 +10,7 @@ window.settings = {
   gameSpeed: 70,
   animationSpeed: 60,
 
-  currentLevel: 8,
+  currentLevel: 3, // n - 1
   actionQueue: actionQueue,
 
   gameRunning: false,
@@ -36,18 +36,16 @@ function gameLoop(){
   updateAnimations();
 
   if(!settings.gameRunning) {
-    buildLevel(); 
     return;
   }
   if(player.bumped){
     setTimeout(() => {
-      settings.gameRunning = false;
-      buildLevel();
+      endGame();
     }, 6 * settings.animationSpeed);
     return;
   }
   // if(actionQueue.length === 0){
-  //   settings.gameRunning = false;
+  //   endGame();
   // }
   checks();
   if(player.actions === 0)
@@ -76,12 +74,13 @@ function buildNextLevel(){
   
   settings.gameIntermission = true;
   
-  setBlackout(24);
+  // setBlackout(24);
   player.exit();
   
   setTimeout(() => {
     buildLevel();
     player.enter();
+    console.log(player.enter)
 
     setTimeout(() => {
       settings.gameIntermission = false;
@@ -102,7 +101,10 @@ function buildLevel(){
   player = new Player(level.startPoz.x, level.startPoz.y, assets.player, level);
   level.player = player;
 }
-
+function endGame(){
+  settings.gameRunning = false;
+  buildLevel();
+}
 
 function compiledCode(){
   const code = codeDOM.value;
@@ -155,7 +157,7 @@ function updateAnimations(){
 function updateQueue(actionQueue, level){
   let player = level.player;
   if(actionQueue === null){
-    settings.gameRunning = false;
+    endGame();
     return;
   }
 
@@ -194,7 +196,7 @@ function updateQueue(actionQueue, level){
 
       let success = player.exit();
       if(success === null)
-        settings.gameRunning = false;
+        endGame();
 
       break;
     }

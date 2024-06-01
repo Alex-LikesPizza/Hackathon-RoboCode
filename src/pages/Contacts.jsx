@@ -6,8 +6,8 @@ import { useSpring, animated } from 'react-spring';
 import { useInView } from "react-intersection-observer";
 
 const Contacts = () => {
-  const [ ref1, inView1 ] = useInView({threshold: 0.5, triggerOnce: true});
-  const [ ref2, inView2 ] = useInView({threshold: 0.5, triggerOnce: true});
+  const [ ref1, inView1 ] = useInView({threshold: 0.3, triggerOnce: true});
+  const [ ref2, inView2 ] = useInView({threshold: 0.3, triggerOnce: true});
 
   const fadeDown1 = useSpring({
     transform: inView1? "translateY(0)" : 'translateY(50%)',
